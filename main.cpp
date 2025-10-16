@@ -9,6 +9,8 @@ void bubble_sort(int *a, int n);
 void insertion_sort(int *a, int n);
 void check_sort(void (*func)(int *, int), int *a, int *b, int n);
 void choice_sort(int *a, int n);
+void test_merge_sort(int *a, int n);
+void merge_sort(int *a, int *res, int l, int r);
 
 int main(void)
 {
@@ -26,9 +28,10 @@ int main(void)
     
     std::ofstream f("results.csv", ios::out);
     
-    check_sort(bubble_sort, a, b, n);
-    check_sort(insertion_sort, a, b, n);
-    check_sort(choice_sort, a, b, n);
+    // check_sort(bubble_sort, a, b, n);
+    // check_sort(insertion_sort, a, b, n);
+    // check_sort(choice_sort, a, b, n);
+    check_sort(test_merge_sort, a, b, n);
 
 
     return 0;
@@ -110,6 +113,49 @@ void choice_sort(int *a, int n)
             }
         }
         
+    }
+    
+}
+
+void test_merge_sort(int *a, int n)
+{
+    int *res = (int*)malloc(sizeof(int) * n);
+
+    merge_sort(a, res, 0, n-1);
+
+    free(res);
+}
+
+void merge_sort(int *a, int *res, int l, int r)
+{
+    if (l >= r)
+        return;
+    merge_sort(a, res,  l, (l+r) / 2);
+    merge_sort(a, res, (l+r) / 2 + 1, r);
+
+    int k = l, i = l, j = (l+r) / 2 + 1;
+    
+    while ((i <= (l+r)/2) && (j <= r))
+    {
+        if (a[i] <= a[j]) {
+            res[k++] = a[i++];
+        }
+        if (a[i] > a[j]) {
+            res[k++] = a[j++];
+        }
+    }
+    while (i <= (l+r)/2)
+    {
+        res[k++] = a[i++];
+    }
+    while (j <= r)
+    {
+        res[k++] = a[j++];
+    }
+
+    for (size_t i = l; i <= r; i++)
+    {
+        a[i] = res[i];
     }
     
 }

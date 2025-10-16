@@ -14,7 +14,7 @@
 import matplotlib.pyplot as plt
 
 y = []
-with open("resultsO3.csv") as f:
+with open("results.csv") as f:
     for line in f:
         y.append([int(t) for t in line.strip().split()])
 
