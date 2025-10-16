@@ -19,6 +19,7 @@ int main(void)
     printf("%zu elements\n", cnt);
     
     int *array = (int*)malloc(sizeof(int) * cnt);
+
     rewind(file);
     for (size_t i = 0; i < cnt; i++)
     {
@@ -33,22 +34,43 @@ int main(void)
 
     struct timespec start, end;
 
-    clock_gettime(CLOCK_MONOTONIC, &start);
+    FILE *time_results = fopen("results.csv", "w");
 
-    bubble_sort(array, cnt);
-
-    clock_gettime(CLOCK_MONOTONIC, &end);
-
-    long long nsec = (end.tv_sec - start.tv_sec) * 1000000000LL +
-                     (end.tv_nsec - start.tv_nsec);
-
-    for (size_t i = 0; i < cnt; i++)
+    for (size_t k = 1; k <= cnt; k++)
     {
-        printf("%d ", array[i]);
-    }
-    printf("\n");
+        rewind(file);
+        for (size_t i = 0; i < cnt; i++)
+        {
+            fscanf(file, "%d", &array[i]);
+        }
 
-    printf("%lld", nsec);
+        clock_gettime(CLOCK_MONOTONIC, &start);
+
+        bubble_sort(array, k);
+
+        clock_gettime(CLOCK_MONOTONIC, &end);
+
+        long long nsec = (end.tv_sec - start.tv_sec) * 1000000000LL +
+                        (end.tv_nsec - start.tv_nsec);
+
+        // for (size_t i = 0; i < k; i++)
+        // {
+        //     printf("%d ", array[i]);
+        // }
+        // printf("\n");
+
+        
+        fprintf(time_results, "%lld ", nsec);
+
+        
+        
+
+        // printf("%lld\n", nsec);
+
+    }   
+
+    fclose(time_results);
+    fclose(file);
     return 0;
     
 }
