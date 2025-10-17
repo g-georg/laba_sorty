@@ -21,39 +21,39 @@ int main(void)
     return 0;
 }
 
-void merge_sort(int *a, int *res, int l, int r)
+void sort(int *a, int *res, int l, int r)
 {
+
     if (l >= r)
         return;
-    merge_sort(a, res,  l, (l+r) / 2);
-    merge_sort(a, res, (l+r) / 2 + 1, r);
 
-    int k = l, i = l, j = (l+r) / 2 + 1;
-    
-    while ((i <= (l+r)/2) && (j <= r))
+    int m = (l + r) / 2;
+
+    sort(a, l, m, res);
+    sort(a, m + 1, r, res);
+
+    int i = l, j = m+1, k = 0;
+
+    while (k < (r - l + 1) && (i <= m) && (j <= r))
     {
-        if (a[i] <= a[j]) {
-            res[k++] = a[i++];
-        }
-        if (a[i] > a[j]) {
-            res[k++] = a[j++];
-        }
+        if ((a)[i] <= (a)[j])
+            res[k++] = (a)[i++];
+        if ((a)[j] < (a)[i])
+            res[k++] = (a)[j++];
     }
-    while (i <= (l+r)/2)
+
+    while (i <= m)
     {
-        res[k++] = a[i++];
+        res[k++] = (a)[i++];
     }
     while (j <= r)
     {
-        res[k++] = a[j++];
+        res[k++] = (a)[j++];
     }
 
-    for (size_t i = l; i <= r; i++)
+    k = 0;
+    for (int i = l; i <= r; i++)
     {
-        a[i] = res[i];
+        a[i] = res[k++];
     }
-    
-    
-    
-    
 }
