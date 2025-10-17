@@ -52,3 +52,27 @@ fig.text(0.5, 0.01, f"Оценка cтепени N для 3х сортирово
 
 plt.tight_layout()
 plt.show()
+
+fig, axes = plt.subplots(nrows=2, ncols=2)
+
+k = 0
+
+for i in range(0, 4):
+    y = []
+    with open(f"resultsO{i}.csv") as f:
+        for line in f:
+            y.append([int(t) for t in line.strip().split()])
+
+    x = range(1, len(y[0]) + 1)
+
+    for y_ in y:
+        if (i < 2):
+            j = i
+        else:
+            k = 1
+            j = i % 2
+        axes[k, j].set_title(f"-O{i}")
+        axes[k, j].scatter(x, y_, s=2)
+    
+
+plt.show()

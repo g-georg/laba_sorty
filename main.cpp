@@ -11,6 +11,8 @@ void check_sort(void (*func)(int *, int), int *a, int *b, int n);
 void choice_sort(int *a, int n);
 void test_merge_sort(int *a, int n);
 void merge_sort(int *a, int *res, int l, int r);
+void test_qsort(int *a, int n);
+void my_qsort(int *a, int l, int r);
 
 int main(void)
 {
@@ -32,6 +34,7 @@ int main(void)
     // check_sort(insertion_sort, a, b, n);
     // check_sort(choice_sort, a, b, n);
     check_sort(test_merge_sort, a, b, n);
+    check_sort(test_qsort, a, b, n);
 
 
     return 0;
@@ -158,4 +161,37 @@ void merge_sort(int *a, int *res, int l, int r)
         a[i] = res[i];
     }
     
+}
+
+void test_qsort(int *a, int n)
+{
+    my_qsort(a, 0, n-1);
+}
+
+void my_qsort(int *a, int l, int r)
+{
+    if (l >= r)
+        return;
+        int i_p = l + rand() % (r - l + 1);
+        int pivot = a[i_p];
+
+        int i = l, j = r;
+        while (i <= j)
+        {
+            while (a[i] < pivot)
+                i++;
+            while (a[j] > pivot)
+                j--;
+            if (i <= j)
+            {
+                int tmp = a[i];
+                a[i] = a[j];
+                a[j] = tmp;
+                i++;
+                j--;
+            }
+            
+        }
+        my_qsort(a, l, j);
+        my_qsort(a, i, r);
 }
