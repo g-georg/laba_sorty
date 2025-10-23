@@ -1,49 +1,116 @@
 #include <iostream>
-#include <stdio.h>
+#include <vector>
+#include <string>
 
-void my_qsort(int *a, int l, int r);
+using std::vector, std::swap, std::cin, std::cout;
 
-int main(void)
+class Heap
 {
-    int n = 10;
-    int a[] = {5, 4, 3, 2, 1, 5, 4, 3, 2, 1};
+private:
+    vector<int> arr; 
+public:
+    Heap();
 
-
-    my_qsort(a, 0, 9);
-
-    for (size_t i = 0; i < n; i++)
+    size_t len()
     {
-        std::cout << a[i] << ' ';
+        return arr.size() - 1;
     }
-    
 
-    return 0;
+    void SiftUp(int i)
+    {
+        int parent = i / 2;
+        if (parent == 0)
+            return;
+
+        if (arr[i] > arr[parent])
+        {
+            swap(arr[i], arr[parent]);
+            SiftUp(parent);
+        }
+    }
+
+    void SiftDown(int i)
+    {
+        int n = arr.size();
+        int l = 2 * i;
+        int r = 2 * i + 1;
+        int big = i;
+
+        if (l < n && arr[l] > arr[big])
+            big = l;
+        if (r < n && arr[r] > arr[big])
+            big = r;
+
+        if (big != i)
+        {
+            swap(arr[i], arr[big]);
+            SiftDown(big);
+        }
+    }
+
+    void Insert(int key)
+    {
+        arr.push_back(key);
+        SiftUp(arr.size() - 1);
+    }
+
+    void ExtractMax()
+    {
+        if (arr.size() <= 1)
+            return;
+
+        arr[1] = arr.back();
+        arr.pop_back();
+
+        if (arr.size() > 1)
+            SiftDown(1);
+    }
+
+    int GetMax()
+    {
+        return arr[1];
+    }
+};
+
+
+Heap::Heap()
+{
+    arr.push_back(0); 
 }
 
 
-void my_qsort(int *a, int l, int r)
-{
-    if (l >= r)
-        return;
-        int i_p = l + rand() % (r - l + 1);
-        int pivot = a[i_p];
 
-        int i = l, j = r;
-        while (i <= j)
-        {
-            while (a[i] < pivot)
-                i++;
-            while (a[j] > pivot)
-                j--;
-            if (i <= j)
-            {
-                int tmp = a[i];
-                a[i] = a[j];
-                a[j] = tmp;
-                i++;
-                j--;
-            }
-            my_qsort(a, l, j);
-            my_qsort(a, i, r);
-        }
+
+int main(void)
+{
+    Heap h;
+    int n;
+    cin >> n;
+
+    int *a = (int *)malloc(sizeof(int) * n);
+
+    for (int i = 0; i < n; i++)
+    {
+        cin >> a[i];
+        h.Insert(a[i]);
+    }
+
+    for (int i = n-1; i >= 0; i--)
+    {
+       a[i] = h.GetMax();
+       h.ExtractMax();
+    }
+
+    for (int i = 0; i < n; i++)
+    {
+        cout << a[i] << "";
+    }
+    
+    
+    
+
+    
+    
+
+    return 0;
 }

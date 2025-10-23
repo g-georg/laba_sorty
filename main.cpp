@@ -1,9 +1,11 @@
 #include <iostream>
+#include <vector>
 #include <chrono>
 #include <fstream>
+
 #include <stdlib.h>
 
-using std::cin, std::cout, std::ios;
+using std::cin, std::cout, std::ios, std::vector, std::swap;
 
 void bubble_sort(int *a, int n);
 void insertion_sort(int *a, int n);
@@ -13,6 +15,83 @@ void test_merge_sort(int *a, int n);
 void merge_sort(int *a, int *res, int l, int r);
 void test_qsort(int *a, int n);
 void my_qsort(int *a, int l, int r);
+void mergesort(int *a, int n);
+void heapsort(int *a, int n);
+
+class Heap
+{
+private:
+    vector<int> arr; 
+public:
+    Heap();
+
+    size_t len()
+    {
+        return arr.size() - 1;
+    }
+
+    void SiftUp(int i)
+    {
+        int parent = i / 2;
+        if (parent == 0)
+            return;
+
+        if (arr[i] > arr[parent])
+        {
+            swap(arr[i], arr[parent]);
+            SiftUp(parent);
+        }
+    }
+
+    void SiftDown(int i)
+    {
+        int n = arr.size();
+        int l = 2 * i;
+        int r = 2 * i + 1;
+        int big = i;
+
+        if (l < n && arr[l] > arr[big])
+            big = l;
+        if (r < n && arr[r] > arr[big])
+            big = r;
+
+        if (big != i)
+        {
+            swap(arr[i], arr[big]);
+            SiftDown(big);
+        }
+    }
+
+    void Insert(int key)
+    {
+        arr.push_back(key);
+        SiftUp(arr.size() - 1);
+    }
+
+    void ExtractMax()
+    {
+        if (arr.size() <= 1)
+            return;
+
+        arr[1] = arr.back();
+        arr.pop_back();
+
+        if (arr.size() > 1)
+            SiftDown(1);
+    }
+
+    int GetMax()
+    {
+        return arr[1];
+    }
+};
+
+Heap::Heap()
+{
+    arr.push_back(0); 
+}
+
+
 
 int main(void)
 {
@@ -30,11 +109,12 @@ int main(void)
     
     std::ofstream f("results.csv", ios::out);
     
-    // check_sort(bubble_sort, a, b, n);
-    // check_sort(insertion_sort, a, b, n);
-    // check_sort(choice_sort, a, b, n);
-    check_sort(test_merge_sort, a, b, n);
-    check_sort(test_qsort, a, b, n);
+    check_sort(bubble_sort, a, b, n);
+    check_sort(insertion_sort, a, b, n);
+    check_sort(choice_sort, a, b, n);
+    // check_sort(test_merge_sort, a, b, n);
+    // check_sort(test_qsort, a, b, n);
+    // check_sort(heapsort, a, b, n);
 
 
     return 0;
@@ -194,4 +274,21 @@ void my_qsort(int *a, int l, int r)
         }
         my_qsort(a, l, j);
         my_qsort(a, i, r);
+}
+
+void heapsort(int *a, int n)
+{
+    Heap h;
+    for (int i = 0; i < n; i++)
+    {
+        h.Insert(a[i]);
+    }
+
+    for (int i = n-1; i >= 0; i--)
+    {
+        a[i] = h.GetMax();
+        h.ExtractMax();
+    }
+    
+    
 }
