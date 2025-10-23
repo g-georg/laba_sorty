@@ -35,7 +35,7 @@ for y_, lbl in zip(y, ["Bubble", "insertion", "selection"]):
 axes[0].set_title("3 квадратичные сортировки")
 
 
-coeffs = np.array([0.0] * 3)
+coeffs = np.array([0.0] * len(y))
 
 axes[1].set_title("Логарифмированная зависимость времени от кол-ва эл-тов")
 for i, y_ in enumerate(y):
@@ -152,4 +152,33 @@ plt.legend()
 plt.title("Сравнение N^2 и NlogN")
 
 plt.show()
+
+import matplotlib.pyplot as plt
+
+# Читаем worst
+y_worst = []
+with open("worst.csv") as f:
+    for line in f:
+        y_worst.append([int(t) for t in line.strip().split()])
+
+# Читаем best
+y_best = []
+with open("best.csv") as f:
+    for line in f:
+        y_best.append([int(t) for t in line.strip().split()])
+
+
+
+fig, axes = plt.subplots(2, 3, figsize=(12, 4))
+
+for i, y_, best, worst, name in zip([(0,0), (0,1), (0,2), (1, 0), (1, 1), (1, 2)], y_1 + y2, y_best, y_worst, s+["Mergesort", "Quicksort", "Heapsort"]):
+    axes[i].scatter(range(len(y_)), y_, s=2, label="random")
+    axes[i].scatter(range(len(best)), best, s=2, label="best")
+    axes[i].scatter(range(len(worst)), worst, s=2, label="worst")
+    axes[i].set_title(name)
+    axes[i].legend()
+
+plt.tight_layout()
+plt.show()
+
 

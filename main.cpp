@@ -104,7 +104,7 @@ int main(void)
 
     for (size_t i = 0; i < n; i++)
     {
-        b[i] = rand();
+        b[i] = n+1-i;
     }
     
     std::ofstream f("results.csv", ios::out);
@@ -112,9 +112,9 @@ int main(void)
     check_sort(bubble_sort, a, b, n);
     check_sort(insertion_sort, a, b, n);
     check_sort(choice_sort, a, b, n);
-    // check_sort(test_merge_sort, a, b, n);
-    // check_sort(test_qsort, a, b, n);
-    // check_sort(heapsort, a, b, n);
+    check_sort(test_merge_sort, a, b, n);
+    check_sort(test_qsort, a, b, n);
+    check_sort(heapsort, a, b, n);
 
 
     return 0;
